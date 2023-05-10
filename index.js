@@ -13,6 +13,7 @@ const backupDatabase = () => {
   const dbHost = process.env.DB_HOST;
   const dbUser = process.env.DB_USER;
   const dbPort = process.env.DB_PORT;
+  const filepath = process.env.FILE_PATH;
 
   console.log("dbname : " + dbName);
   console.log("dbpass : " + dbPass);
@@ -26,7 +27,7 @@ const backupDatabase = () => {
   const currentDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}-${date.getHours()}-${date.getMinutes()}`;
-  const backupFilePath = `/Users/AssetSIA/Documents/backups/${dbName}-${currentDate}.${format}`;
+  const backupFilePath = `${filepath}${dbName}-${currentDate}.${format}`;
 
   // execute node child process(exec)
   console.log("backup dong");
@@ -47,15 +48,16 @@ const backupDatabase = () => {
 };
 
 // scheduling the backup job
-var job = new CronJob(
-  "00 00,16,20,30,46,56 * * * *",
-  function () {
-    console.log("-------Running cron job-------");
-    backupDatabase();
-  },
-  null,
-  true
-);
+backupDatabase();
+// var job = new CronJob(
+//   "00 00,16,20,30,46,56 * * * *",
+//   function () {
+//     console.log("-------Running cron job-------");
+//     backupDatabase();
+//   },
+//   null,
+//   true
+// );
 
 // set up server
 app.listen(process.env.PORT, () => {
